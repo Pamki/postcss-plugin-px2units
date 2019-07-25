@@ -1,6 +1,6 @@
-# postcss-plugin-autoview
+# postcss-plugin-px2units
 
-[![NPM version](https://badge.fury.io/js/postcss-px-to-autoview.svg)](http://badge.fury.io/js/postcss-px-to-autoview)
+[![NPM version](https://badge.fury.io/js/postcss-plugin-px2units.svg)](http://badge.fury.io/js/postcss-plugin-px2units)
 
 A plugin for [PostCSS](https://github.com/postcss/postcss) that generates viewport units (vw/wh/rem) from pixel units.
 
@@ -14,26 +14,61 @@ If your project involves a fixed width, this script will help to convert pixels 
 ## Installation
 
 ```bash
-$ npm i --save postcss-plugin-autoview
+$ npm i --save postcss-plugin-px2units
 ```
 
 ## Usage
 
 ### input and output
-
+```
+//option
+{
+      viewportWidth: 38.40, //  3840/100
+      viewportHeight: 23.04, // 2304/100
+      rootValue: 200, //  3840*100/1920
+    }
+```
 ```css
 // input
-h1 {
-    width: 100wx;
-    height: 100hx;
-    font-size: 12rx;
+html { font-size: 100px;}
+@media screen and (max-width: 3840px) {
+    html { font-size: 200px;}
+  }
+@media screen and (max-width: 1920px) {
+    html { font-size: 100px;}
+}
+.left{
+   width: 930wx;  
+   font-size: 36rx;
+}
+.right{
+    width: 930wx;
+    font-size: 36rx;
+}
+.center{
+    width: 1768wx;
+    font-size: 64rx; 
 }
 
 // output
-h1 {
-    width: 0.09259vw;
-    height: 0.05208vh;
-    font-size: 0.04688rem;
+html { font-size: 100px;}
+@media screen and (max-width: 3840px) {
+    html { font-size: 200px;}
+  }
+@media screen and (max-width: 1920px) {
+    html { font-size: 100px;}
+}
+.left{
+   width: 24.21875vw;  
+   font-size: 0.18rem;
+}
+.right{
+    width: 24.21875vw;
+    font-size: 0.18rem;
+}
+.center{
+    width: 46.04167vw;
+    font-size: 0.32rem; 
 }
 ```
 
@@ -42,13 +77,13 @@ h1 {
 ```javascript
 import { writeFile, readFileSync } from 'fs';
 import postcss from 'postcss';
-import autoview from 'postcss-plugin-autoview';
+import px2units from 'postcss-plugin-px2units';
 
 const css = readFileSync('/path/to/test.css', 'utf8');
 const options = {
   replace: false,
 };
-const processedCss = postcss(autoview(options)).process(css).css;
+const processedCss = postcss(px2units(options)).process(css).css;
 
 writeFile('/path/to/test.rem.css', processedCss, err => {
   if (err) throw err;
@@ -61,10 +96,10 @@ writeFile('/path/to/test.rem.css', processedCss, err => {
 ```javascript
 var gulp = require('gulp');
 var postcss = require('gulp-postcss');
-var autoview = require('postcss-plugin-autoview');
+var px2units = require('postcss-plugin-px2units');
 gulp.task('css', function () {
   var processors = [
-    autoview
+    px2units
   ];
   return gulp.src('./src/*.css')
     .pipe(postcss(processors))
@@ -75,8 +110,8 @@ gulp.task('css', function () {
 ### with webpack
 
 ```javascript
-import autoview from 'postcss-plugin-autoview';
-const autoviewOpts = {
+import px2units from 'postcss-plugin-px2units';
+const px2unitsOpts = {
   ......
 };
  
@@ -89,7 +124,7 @@ export default {
       },
     ],
   },
-  postcss: [autoview(autoviewOpts)],
+  postcss: [px2units(px2unitsOpts)],
 }
 ```
 
@@ -99,13 +134,13 @@ export default {
 
 ```javascript
 import webpack from 'atool-build/lib/webpack';
-import autoview from 'postcss-plugin-autoview';
+import px2units from 'postcss-plugin-px2units';
 
 export default webpackConfig => {
-  const autoviewOpts = {
+  const px2unitsOpts = {
     ......
   };
-  webpackConfig.postcss.push(autoview(autoviewOpts));
+  webpackConfig.postcss.push(px2units(px2unitsOpts));
 
   return webpackConfig;
 };
@@ -117,11 +152,11 @@ Default:
 ```js
 {
     unitToConvert: {rem:"rx",vw:"wx",vh:"hx"},
-    viewportWidth: 1920, 
-    viewportHeight: 1080,
-    rootValue:256,
-    viewportwidthUnit:'vh',
-    viewportheightUnit: 'vw', 
+    viewportWidth: 19.20, 
+    viewportHeight: 10.80,
+    rootValue:100,
+    viewportwidthUnit:'vw',
+    viewportheightUnit: 'vh', 
     viewportfontUnit: 'rem', 
     unitPrecision: 5,
     minPixelValue: 1,
@@ -133,9 +168,11 @@ Default:
 
 
 - `unitToConvert` (Object) unit lits to convert, by default, it is {rem:"rx",vw:"wx",vh:"hx"}
-- `viewportWidth` (Number) The width of the viewport.Default is 1920.
-- `viewportHeight` (Number) The height of the viewport.Default is 1080.
-- `rootValue` (Number) The root element font size. Default is 256. rootValue = viewportWidth*100/750
+- `viewportWidth` (Number) The width of the viewport.Default is 19.20. -viewportWidth = the width of UI design /100
+- `viewportHeight` (Number) The height of the viewport.Default is 10.80.-viewportHeight = the height of UI design/100
+- `rootValue` (Number) The root element font size. Default is Default is 100. {html:100px}
+   - pcweb:rootValue = the width of UI design*100/1920
+   - mobileweb:rootValue = the width of UI design*100/750
 - `viewportwidthUnit` (Number)  a way to exclude some folder,eg. /(node_module)/.
 - `viewportheightUnit` (Number) Expected height units.
 - `unitPrecision` (Boolean/String)  The decimal numbers to allow the REM or VW OR VH units to grow to.
@@ -143,5 +180,6 @@ Default:
 - `exclude` (Boolean|Reg)  a way to exclude some folder,eg. /(node_module)/.
 - `mediaQuery` (Boolean) Allow px to be converted in media queries.
 - `replace` (Boolean) replaces rules containing rems instead of adding fallbacks.
+
 ### License
 Thanks postcss-plugin-pxtorem and postcss-px-to-viewport

@@ -1,15 +1,15 @@
 {
-  "name": "postcss-px-to-autoview",
+  "name": "postcss-plugin-px2units",
   "description": "A CSS post-processor that converts px to viewport units (vw, vh, rem).",
   "version": "1.0.0",
   "author": "jadepam <pamki@sina.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@gitee.com:jadepam/postcss-px-to-autoview.git"
+    "url": "git@gitee.com:jadepam/postcss-plugin-px2units.git"
   },
-  "bugs": "https://gitee.com/jadepam/postcss-px-to-autoview/issues",
-  "homepage": "https://gitee.com/jadepam/postcss-px-to-autoview.git",
+  "bugs": "https://gitee.com/jadepam/postcss-plugin-px2units/issues",
+  "homepage": "https://gitee.com/jadepam/postcss-plugin-px2units.git",
   "main": "index.js",
   "scripts": {
     "gulp": "gulp css"

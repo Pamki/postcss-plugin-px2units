@@ -1,8 +1,10 @@
 /**
  * @param {object} unitToConvert unit lits to convert, by default, it is {rem:"rx",vw:"wx",vh:"hx"}
- * @param {Number} viewportWidth The width of the viewport.Default is 1920.
- * @param {Number} viewportHeight The height of the viewport.Default is 1080.
- * @param {Number} rootValue The root element font size. Default is 256. rootValue = viewportWidth*100/750
+ * @param {Number} viewportWidth The width of the viewport.Default is 19.20. -viewportWidth = the width of UI design/100
+ * @param {Number} viewportHeight The height of the viewport.Default is 10.80.-viewportHeight = the height of UI design/100
+ * @param {Number} rootValue The root element font size. Default is 100. {html:100px}
+ * -pcweb：rootValue = the width of UI design*100/1920
+ * -mobileweb：rootValue = the width of UI design*100/750
  * @param {object} viewportwidthUnit Expected with units.
  * @param {object} viewportheightUnit Expected height units.
  * @param {object} viewportfontUnit Expected units for font.
@@ -16,11 +18,11 @@
 var postcss = require('postcss');
 var defaultOpts = {
     unitToConvert: {rem:"rx",vw:"wx",vh:"hx"},
-    viewportWidth: 1920, 
-    viewportHeight: 1080,
-    rootValue:256,
-    viewportwidthUnit:'vh',
-    viewportheightUnit: 'vw', 
+    viewportWidth: 19.20, 
+    viewportHeight: 10.80,
+    rootValue:100,
+    viewportwidthUnit:'vw',
+    viewportheightUnit: 'vh', 
     viewportfontUnit: 'rem', 
     unitPrecision: 5,
     minPixelValue: 1,
@@ -92,7 +94,7 @@ const createPxReplace = (opts,defunit) => (m, $1) => {
  * @param {String} prop //Style properties
  * @param {String} value //Style value
  */
-module.exports = postcss.plugin('postcss-plugin-autoview', options => {
+module.exports = postcss.plugin('postcss-plugin-px2units', options => {
   const opts = { ...defaultOpts, ...options };
   return css => {
         for (let defunit in opts.unitToConvert) {

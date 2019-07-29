@@ -9,8 +9,7 @@ A plugin for [PostCSS](https://github.com/postcss/postcss) that generates viewpo
      src="http://postcss.github.io/postcss/logo-leftp.svg">
 
 ## Features
-If your project involves a fixed width, this script will help to convert pixels into viewport units(vw/wh/rem).
-
+Use the Flex layout, Grid layout, viewport units rem ,vw and wh to adapt to multi-screen problem
 ## Installation
 
 ```bash
@@ -23,52 +22,105 @@ $ npm i --save postcss-plugin-px2units
 ```
 //option
 {
-      viewportWidth: 38.40, //  3840/100
-      viewportHeight: 23.04, // 2304/100
-      rootValue: 200, //  3840*100/1920
+      viewportWidth: 3840, //  3840
+      viewportHeight: 2304, // 2304
     }
 ```
 ```css
 // input
-html { font-size: 100px;}
-@media screen and (max-width: 3840px) {
-    html { font-size: 200px;}
-  }
-@media screen and (max-width: 1920px) {
-    html { font-size: 100px;}
+html { font-size: 100wx;}//1:100 rem
+/* 100px*100/1920 => vw */
+body{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-around;
+    background: yellow;
+    text-align: center;
+}
+div{
+    border: 1px solid black;  
+}
+.top{
+    height: 217hx;
+    font-size: 84rx;/*/设计稿字体大小*/
+}
+.bottom{
+    display: grid;
+    grid-template-columns: 930fr 1768fr 930fr; /* //设计稿宽度 */
+    font-size: 84wx;/*/设计稿字体大小*/
+}
+.left div,.right div,.center div{
+    margin: 40wx;
+}
+.bottom {
+    margin:80wx;
+    flex: 1;
 }
 .left{
-   width: 930wx;  
-   font-size: 36rx;
-}
-.right{
-    width: 930wx;
-    font-size: 36rx;
-}
-.center{
-    width: 1768wx;
-    font-size: 64rx; 
+    display: grid;
+    grid-template-rows: repeat(3, 640fr);
 }
 
+.center{
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+.right{
+    display: grid;
+    grid-template-rows: repeat(2, 984fr);
+}
+
+
 // output
-html { font-size: 100px;}
-@media screen and (max-width: 3840px) {
-    html { font-size: 200px;}
-  }
-@media screen and (max-width: 1920px) {
-    html { font-size: 100px;}
+html { font-size: 2.60417vw;}
+/* 100/1920 */
+body{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-around;
+    background: yellow;
+    text-align: center;
+    
+}
+div{
+    border: 1px solid black;  
+}
+.top{
+    height: 9.4184vh;
+    font-size: 0.84rem;
+}
+.bottom{
+    display: grid;
+    grid-template-columns: 930fr 1768fr 930fr; /* //设计稿宽度 */
+    font-size: 2.1875vw;
+}
+.left div,.right div,.center div{
+    margin: 1.04167vw;
+}
+.bottom {
+    margin:2.08333vw;
+    flex: 1;
 }
 .left{
-   width: 24.21875vw;  
-   font-size: 0.18rem;
+    display: grid;
+    grid-template-rows: repeat(3, 640fr);
 }
-.right{
-    width: 24.21875vw;
-    font-size: 0.18rem;
-}
+
 .center{
-    width: 46.04167vw;
-    font-size: 0.32rem; 
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+.right{
+    display: grid;
+    grid-template-rows: repeat(2, 984fr);
 }
 ```
 
@@ -152,8 +204,8 @@ Default:
 ```js
 {
     unitToConvert: {rem:"rx",vw:"wx",vh:"hx"},
-    viewportWidth: 19.20, 
-    viewportHeight: 10.80,
+    viewportWidth: 1920, 
+    viewportHeight: 1080,
     rootValue:100,
     viewportwidthUnit:'vw',
     viewportheightUnit: 'vh', 
@@ -168,11 +220,9 @@ Default:
 
 
 - `unitToConvert` (Object) unit lits to convert, by default, it is {rem:"rx",vw:"wx",vh:"hx"}
-- `viewportWidth` (Number) The width of the viewport.Default is 19.20. -viewportWidth = the width of UI design /100
-- `viewportHeight` (Number) The height of the viewport.Default is 10.80.-viewportHeight = the height of UI design/100
-- `rootValue` (Number) The root element font size. Default is Default is 100. {html:100px}
-   - pcweb:rootValue = the width of UI design*100/1920
-   - mobileweb:rootValue = the width of UI design*100/750
+- `viewportWidth` (Number) The width of the viewport.Default is 19.20. -viewportWidth = the width of UI design
+- `viewportHeight` (Number) The height of the viewport.Default is 10.80.-viewportHeight = the height of UI design
+- `rootValue` (Number) The root element font size. Default is 100. {html:100wx=100px*100/1920vw}
 - `viewportwidthUnit` (Number)  a way to exclude some folder,eg. /(node_module)/.
 - `viewportheightUnit` (Number) Expected height units.
 - `unitPrecision` (Boolean/String)  The decimal numbers to allow the REM or VW OR VH units to grow to.

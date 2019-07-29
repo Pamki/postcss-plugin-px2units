@@ -1,10 +1,8 @@
 /**
  * @param {object} unitToConvert unit lits to convert, by default, it is {rem:"rx",vw:"wx",vh:"hx"}
- * @param {Number} viewportWidth The width of the viewport.Default is 19.20. -viewportWidth = the width of UI design/100
- * @param {Number} viewportHeight The height of the viewport.Default is 10.80.-viewportHeight = the height of UI design/100
- * @param {Number} rootValue The root element font size. Default is 100. {html:100px}
- * -pcweb：rootValue = the width of UI design*100/1920
- * -mobileweb：rootValue = the width of UI design*100/750
+ * @param {Number} viewportWidth The width of the viewport.Default is 1920. -viewportWidth = the width of UI design
+ * @param {Number} viewportHeight The height of the viewport.Default is 1080.-viewportHeight = the height of UI design
+ * @param {Number} rootValue The root element font size. Default is 100. {html:100wx=100px*100/1920vw}
  * @param {object} viewportwidthUnit Expected with units.
  * @param {object} viewportheightUnit Expected height units.
  * @param {object} viewportfontUnit Expected units for font.
@@ -18,8 +16,8 @@
 var postcss = require('postcss');
 var defaultOpts = {
     unitToConvert: {rem:"rx",vw:"wx",vh:"hx"},
-    viewportWidth: 19.20, 
-    viewportHeight: 10.80,
+    viewportWidth: 1920, 
+    viewportHeight: 1080,
     rootValue:100,
     viewportwidthUnit:'vw',
     viewportheightUnit: 'vh', 
@@ -82,7 +80,7 @@ const createPxReplace = (opts,defunit) => (m, $1) => {
         default:
             baseValue = opts.rootValue
    }
-    const fixedVal = toFixed((pixels / baseValue), opts.unitPrecision);
+    const fixedVal = toFixed((pixels / baseValue)*(defunit==="rem"?1:100), opts.unitPrecision);
     return `${fixedVal}${defunit}`;
   };
 /**The recursive single subunit of a CSS file transformed by postcss Parser
@@ -97,6 +95,8 @@ const createPxReplace = (opts,defunit) => (m, $1) => {
 module.exports = postcss.plugin('postcss-plugin-px2units', options => {
   const opts = { ...defaultOpts, ...options };
   return css => {
+    console.log(css.walkDecls,"css")
+    
         for (let defunit in opts.unitToConvert) {
             let unit = opts.unitToConvert[defunit]
             const pxReplace = createPxReplace(opts,defunit);

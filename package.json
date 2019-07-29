@@ -24,7 +24,9 @@
     "vh",
     "rem",
     "postcss",
-    "postcss-plugin"
+    "postcss-plugin",
+    "flex",
+    ""
   ],
   "dependencies": {
     "postcss": "^7.0.17"

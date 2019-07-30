@@ -7,12 +7,12 @@ os:
  - linux
 
 stages:
- - test
-#  - name: deploy
+#  - test
+ - name: deploy
 
 jobs:
  include:
-   - stage: test
+   - stage: deploy
      script:
        - node --version
        - npm --version
@@ -27,7 +27,7 @@ jobs:
   #      - npm run build
   #      - echo "NPM Building Finished."
 
-     test:
+     deploy:
        provider: npm
        email: pamki@sina.com
        api_key: "$NPM_TOKEN"

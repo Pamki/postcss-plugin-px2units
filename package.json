@@ -6,10 +6,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@gitee.com:jadepam/postcss-plugin-px2units.git"
+    "url": "git@github.com:Pamki/postcss-plugin-px2units.git"
   },
-  "bugs": "https://gitee.com/jadepam/postcss-plugin-px2units/issues",
-  "homepage": "https://gitee.com/jadepam/postcss-plugin-px2units.git",
+  "bugs": "https://github.com/Pamki/postcss-plugin-px2units/issues",
+  "homepage": "https://github.com/Pamki/postcss-plugin-px2units",
   "main": "index.js",
   "scripts": {
     "gulp": "gulp css"

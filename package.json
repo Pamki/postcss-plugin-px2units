@@ -26,7 +26,7 @@
     "postcss",
     "postcss-plugin",
     "flex",
-    ""
+    "grid"
   ],
   "dependencies": {
     "postcss": "^7.0.17"

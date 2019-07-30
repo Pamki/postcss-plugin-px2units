@@ -1,7 +1,6 @@
 language : node_js
 node_js:
  - "10"
- - "9"
 install:
 - npm install
 os:
@@ -9,7 +8,7 @@ os:
 
 stages:
  - test
- - name: deploy
+#  - name: deploy
 
 jobs:
  include:
@@ -21,14 +20,14 @@ jobs:
        - npm test
        - echo "Testing Finished."
 
-   - stage: deploy
-     script:
-       - echo "NPM Deploying Started ..."
-       - npm version
-       - npm run build
-       - echo "NPM Building Finished."
+  #  - stage: deploy
+  #    script:
+  #      - echo "NPM Deploying Started ..."
+  #      - npm version
+  #      - npm run build
+  #      - echo "NPM Building Finished."
 
-     deploy:
+     test:
        provider: npm
        email: pamki@sina.com
        api_key: "$NPM_TOKEN"
